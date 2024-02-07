@@ -5,6 +5,7 @@ import express from "express";
 import { workoutRoutes } from "./routes/workouts.js";
 import mongoose from "mongoose";
 import { DB_NAME } from "./constants.js";
+import fs from "fs";
 
 // Creating APP
 const app = express();
@@ -13,6 +14,21 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ msg: "Home" });
+});
+
+app.use((req, res, next) => {
+  const formattedDate = new Date().toLocaleDateString("en-GB");
+
+  fs.appendFile(
+    "reqDetails.txt",
+    `\n Date : ${formattedDate}, Request Method : ${req.method}`,
+    (err) => {
+      if (err) {
+        console.error("Error appending to file:", err);
+      }
+      next();
+    }
+  );
 });
 
 app.use("/api/workouts", workoutRoutes);

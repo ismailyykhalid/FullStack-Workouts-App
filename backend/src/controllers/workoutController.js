@@ -3,8 +3,13 @@ import mongoose from "mongoose";
 
 //Get all Workouts
 const getAllWorkouts = async (req, res) => {
-  const allWorkouts = await Workout.find({}).sort({ createdAt: -1 });
-  res.status(200).json(allWorkouts);
+  const workouts = await Workout.find({}).sort({ createdAt: -1 });
+  if (workouts.length === 0) {
+    return res
+      .status(200)
+      .json({ message: "Workouts Collection is empty in DB" });
+  }
+  res.status(200).json(workouts);
 };
 
 //Get a single Workout
@@ -12,7 +17,7 @@ const getSingleWorkout = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: "Not a Valid ID" });
+    return res.status(400).json({ error: "Not a workout with this ID" });
   }
   const workout = await Workout.findById(id);
 
@@ -29,7 +34,7 @@ const createWorkout = async (req, res) => {
 
   try {
     const workout = await Workout.create({ title, reps, load });
-    res.status(200).json(workout);
+    res.status(201).json(workout);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -40,11 +45,15 @@ const createWorkout = async (req, res) => {
 const deleteWorkout = async (req, res) => {
   const { id } = req.params.id;
   try {
-    const deletedWorkout = await Workout.findOneAndDelete({ _id: id });
-    if (!deleteWorkout) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Not a workout with this ID" });
+    }
+
+    const workout = await Workout.findOneAndDelete({ _id: id });
+    if (!workout) {
       return res.status(404).json({ error: "No Such Workout" });
     }
-    res.status(200).json(deletedWorkout);
+    res.status(200).json(workout);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -52,17 +61,16 @@ const deleteWorkout = async (req, res) => {
 
 //Update a single workout
 const updateWorkout = async (req, res) => {
-  const { id, title, reps, load } = req.body;
+  const { id } = req.params;
 
-  try {
-    const updatedWorkout = await Workout.updateOne(
-      { id },
-      { title, reps, load }
-    );
-    res.status(200).json(updatedWorkout);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Not a workout with this ID" });
   }
+  const workout = await Workout.findByIdAndUpdate({ _id: id }, { ...req.body });
+  if (!workout) {
+    return res.status(404).json({ error: "No Such Workout" });
+  }
+  res.status(200).json(workout);
 };
 
 export {
