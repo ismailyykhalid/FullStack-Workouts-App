@@ -6,10 +6,12 @@ import { workoutRoutes } from "./routes/workouts.js";
 import mongoose from "mongoose";
 import { DB_NAME } from "./constants.js";
 import fs from "fs";
+import cors from "cors";
 
 // Creating APP
 const app = express();
 //middleware
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
