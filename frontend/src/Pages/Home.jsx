@@ -2,37 +2,31 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Workout from "../components/Workout";
 import WorkoutForm from "../components/WorkoutForm";
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext.js";
 
 const Home = () => {
-  const [allWorkouts, setAllWorkouts] = useState([]);
+  const { workouts, dispatch } = useWorkoutsContext();
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const response = await axios.get("http://localhost:4000/api/workouts");
+    axios
+      .get("http://localhost:4000/api/workouts")
+      .then((res) => res.data)
+      .then((data) => {
+        const sdata = data;
 
-        // Ensure the response data is an array before setting the state
-        if (Array.isArray(response.data)) {
-          setAllWorkouts(response.data);
-        } else {
-          console.error("API response is not an array:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching workouts:", error);
-      }
-    };
-
-    fetchWorkouts();
+        dispatch({ type: "SET_WORKOUTS", payload: sdata });
+        console.log(sdata);
+      });
   }, []);
 
   return (
     <>
       <div className="flex justify-center">
         <div className="container mt-8 mx-4">
-          {allWorkouts.length === 0 ? (
+          {workouts.length === 0 ? (
             <p>No workouts available</p>
           ) : (
-            allWorkouts.map((workout) => (
+            workouts.map((workout) => (
               <Workout key={workout._id} workout={workout} />
             ))
           )}

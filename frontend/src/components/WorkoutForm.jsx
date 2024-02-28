@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { json } from "react-router-dom";
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const WorkoutForm = () => {
+  const { dispatch } = useWorkoutsContext();
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
@@ -24,6 +25,7 @@ const WorkoutForm = () => {
     }
     if (serverResponse.status == 201) {
       setError(null);
+      dispatch({ type: "CREATE_WORKOUT", payload: serverResponseJson });
       console.log("new Workout added");
       setTitle("");
       setLoad("");
