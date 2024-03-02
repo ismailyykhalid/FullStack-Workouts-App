@@ -32,6 +32,17 @@ const getSingleWorkout = async (req, res) => {
 const createWorkout = async (req, res) => {
   const { title, reps, load } = req.body;
 
+  // Check if any of the required fields are missing
+  if (!title) {
+    return res.status(400).json({ error: "Title is required." });
+  }
+  if (!reps) {
+    return res.status(400).json({ error: "Reps are required." });
+  }
+  if (!load) {
+    return res.status(400).json({ error: "Load is required." });
+  }
+
   try {
     const workout = await Workout.create({ title, reps, load });
     res.status(201).json(workout);
@@ -43,19 +54,21 @@ const createWorkout = async (req, res) => {
 //Delete a single workout
 
 const deleteWorkout = async (req, res) => {
-  const { id } = req.params.id;
+  const id = req.params.id;
+  console.log(id);
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Not a workout with this ID" });
+      return res.status(400).json({ error: "Not valid ID" });
     }
 
-    const workout = await Workout.findOneAndDelete({ _id: id });
+    const workout = await Workout.findByIdAndDelete(id);
     if (!workout) {
       return res.status(404).json({ error: "No Such Workout" });
     }
     res.status(200).json(workout);
   } catch (error) {
     res.status(400).json({ error: error.message });
+    console.log(error);
   }
 };
 

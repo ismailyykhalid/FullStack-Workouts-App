@@ -12,10 +12,7 @@ const Home = () => {
       .get("http://localhost:4000/api/workouts")
       .then((res) => res.data)
       .then((data) => {
-        const sdata = data;
-
-        dispatch({ type: "SET_WORKOUTS", payload: sdata });
-        console.log(sdata);
+        dispatch({ type: "SET_WORKOUTS", payload: data });
       });
   }, []);
 
@@ -23,10 +20,10 @@ const Home = () => {
     <>
       <div className="flex justify-center">
         <div className="container mt-8 mx-4">
-          {workouts.length === 0 ? (
+          {workouts?.length === 0 ? (
             <p>No workouts available</p>
           ) : (
-            workouts.map((workout) => (
+            workouts?.map((workout) => (
               <Workout key={workout._id} workout={workout} />
             ))
           )}
