@@ -5,6 +5,7 @@ import { connectDB } from "./db/connection.js";
 import { workoutRoutes } from "./routes/workouts.js";
 
 import cors from "cors";
+import { userRoutes } from "./routes/user.js";
 
 // Creating APP
 const app = express();
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/user", userRoutes);
 
 connectDB();
 
