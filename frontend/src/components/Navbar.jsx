@@ -5,13 +5,16 @@ const Navbar = () => {
   return (
     <nav className="bg-gray-600 p-8 ">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white font-bold text-xl">Workout Buddy</div>
+        <div className="text-white font-bold text-xl">
+          {" "}
+          <Link to={"/"}>Workout Buddy</Link>
+        </div>
         <div className="flex space-x-4">
-          <Link to="/" className="text-white hover:text-gray-300">
-            Home
+          <Link to="/signup" className="text-white hover:text-gray-300">
+            Signup
           </Link>
-          <Link to="/about" className="text-white hover:text-gray-300">
-            About
+          <Link to="/login" className="text-white hover:text-gray-300">
+            Login
           </Link>
         </div>
       </div>

@@ -1,8 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import validator from "validator";
 
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema(
+const userSchema = mongoose.Schema(
   {
     email: {
       type: String,
@@ -15,5 +15,50 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+//Static singup method
+userSchema.statics.signup = async function (email, password) {
+  //Credentials Validation
+  if (!email || !password) {
+    throw Error("Both fields (Email and Password) are required!");
+  }
+  if (!validator.isEmail(email)) {
+    throw Error("Email is not valid!");
+  }
+  if (!validator.isStrongPassword(password)) {
+    throw Error("Password is not Strong enough");
+  }
 
-export const User = mongoose.Model("User", userSchema);
+  const exists = await this.findOne({ email });
+
+  if (exists) {
+    throw Error("Email already in use");
+  }
+
+  const salt = await bcrypt.genSalt(12);
+  const hash = await bcrypt.hash(password, salt);
+
+  const user = await this.create({ email, password: hash });
+  return user;
+};
+
+//Static Login Method
+userSchema.statics.login = async function (email, password) {
+  //Credentials Validation
+  if (!email || !password) {
+    throw Error("Both fields (Email and Password) are required!");
+  }
+
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw Error("Incorrect Email");
+  }
+
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) {
+    throw Error("Incorrect Password");
+  }
+
+  return user;
+};
+
+export const User = mongoose.model("User", userSchema);
