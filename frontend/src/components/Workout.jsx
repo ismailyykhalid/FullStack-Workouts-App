@@ -2,19 +2,27 @@
 import axios from "axios";
 import React from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
-import fromatDistancetoNow, {
-  formatDistanceToNow,
-} from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Workout = ({ workout }) => {
+  const { user } = useAuthContext();
   const { dispatch } = useWorkoutsContext();
 
   const handelDeleteWorkout = async () => {
+    if (!user) {
+      return;
+    }
     console.log(workout._id); // Ensure this logs the correct ID
     try {
       const { data } = await axios.delete(
         `http://localhost:4000/api/workouts/${workout._id}`,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            Authorization: `Bearer ${user?.Token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(data);
       dispatch({ type: "DELETE_WORKOUT", payload: data });

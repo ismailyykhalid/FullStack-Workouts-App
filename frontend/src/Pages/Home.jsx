@@ -3,24 +3,34 @@ import axios from "axios";
 import Workout from "../components/Workout";
 import WorkoutForm from "../components/WorkoutForm";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext.js";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Home = () => {
+  const { user } = useAuthContext();
   const { workouts, dispatch } = useWorkoutsContext();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/workouts");
-        const data = response.data;
-        dispatch({ type: "SET_WORKOUTS", payload: data });
+        const response = await fetch("http://localhost:4000/api/workouts", {
+          headers: {
+            Authorization: `Bearer ${user?.Token}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          dispatch({ type: "SET_WORKOUTS", payload: data });
+        }
       } catch (error) {
         // Handle errors here
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData();
-  }, []);
+    if (user) {
+      fetchData();
+    }
+  }, [dispatch, user]);
 
   return (
     <>

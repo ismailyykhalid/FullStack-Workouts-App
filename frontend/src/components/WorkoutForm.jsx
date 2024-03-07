@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
+  const { user } = useAuthContext();
   const { dispatch } = useWorkoutsContext();
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
@@ -14,11 +16,20 @@ const WorkoutForm = () => {
 
     const workout = { title, load, reps };
     console.log(workout);
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
 
     try {
       const { data } = await axios.post(
         "http://localhost:4000/api/workouts",
-        workout
+        workout,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.Token}`,
+          },
+        }
       );
       console.log({ data });
       dispatch({ type: "CREATE_WORKOUT", payload: data });
@@ -78,6 +89,7 @@ const WorkoutForm = () => {
         </button>
         {error && (
           <div className="text-red-500 border border-red-500 p-2 bg-red-100 mt-3 rounded-xl">
+            {error}
             {error.includes("Load") && <p>Load is required.</p>}
             {error.includes("Title") && <p>Title is required.</p>}
             {error.includes("Reps") && <p>Reps is required.</p>}
