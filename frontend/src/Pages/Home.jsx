@@ -24,9 +24,8 @@ const Home = () => {
 
   return (
     <>
-      {console.log(workouts)}
-      <div className="flex justify-center">
-        {/* <div className="container mt-8 mx-4">
+      <div className="flex justify-center ">
+        <div className="container mt-8 mx-4">
           {Array.isArray(workouts) && workouts.length === 0 ? (
             <p className="text-center text-8xl">No workouts available 😕</p>
           ) : (
@@ -34,7 +33,7 @@ const Home = () => {
               <Workout key={workout._id} workout={workout} />
             ))
           )}
-        </div> */}
+        </div>
         <WorkoutForm />
       </div>
     </>

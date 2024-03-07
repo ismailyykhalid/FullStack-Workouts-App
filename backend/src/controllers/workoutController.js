@@ -5,9 +5,7 @@ import mongoose from "mongoose";
 const getAllWorkouts = async (req, res) => {
   const workouts = await Workout.find({}).sort({ createdAt: -1 });
   if (workouts.length === 0) {
-    return res
-      .status(200)
-      .json({ message: "Workouts Collection is empty in DB" });
+    return res.status(200);
   }
   res.status(200).json(workouts);
 };

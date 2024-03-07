@@ -11,10 +11,6 @@ const WorkoutForm = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // if (!title || !load || !reps) {
-    //   setError("All fields are required.");
-    //   return;
-    // }
 
     const workout = { title, load, reps };
     console.log(workout);
@@ -38,7 +34,7 @@ const WorkoutForm = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md w-[60%] h-[50%]">
+    <div className="p-6 bg-white rounded-lg shadow-md w-[50%] h-[70%] m-9 border border-black">
       <h1 className="text-2xl font-semibold mb-4">Add New Workout</h1>
       <form onSubmit={handleFormSubmit}>
         <label className="block text-sm font-medium text-gray-600 mb-4">

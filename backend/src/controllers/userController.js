@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { User } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 
@@ -23,7 +22,7 @@ export const userLogin = async (req, res) => {
 
     res.status(200).json({ email, Token });
   } catch (error) {
-    res.status(400).json({ Error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 

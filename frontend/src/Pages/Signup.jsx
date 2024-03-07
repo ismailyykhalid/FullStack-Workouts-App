@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { useSignup } from "../hooks/useSignup";
 
 const Signup = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const handelSignup = (e) => {
+  const { signup, isLoading, error } = useSignup();
+  const handelSignup = async (e) => {
     e.preventDefault();
-    console.log(email, password);
+    await signup(email, password);
   };
+
   return (
     <>
       <div>
@@ -26,6 +29,8 @@ const Signup = () => {
                   <input
                     className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="email"
+                    required="required"
+                    name="email"
                     type="email"
                     placeholder="Enter your email address"
                     onChange={(e) => setEmail(e.target.value)}
@@ -42,6 +47,7 @@ const Signup = () => {
                     className="border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="password"
                     type="password"
+                    required="required"
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -51,11 +57,21 @@ const Signup = () => {
                 </div>
                 <div className="mb-6">
                   <button
+                    disabled={isLoading}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit"
                   >
                     Signup
                   </button>
+                  {error && (
+                    <div
+                      className="text-red-500 text-lg border border-red-400 p-3 rounded-lg mt-3 bg-red-50
+                    "
+                      role="alert"
+                    >
+                      {error}
+                    </div>
+                  )}
                 </div>
               </form>
             </div>

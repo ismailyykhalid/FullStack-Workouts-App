@@ -3,7 +3,6 @@ import Signup from "../src/Pages/Signup";
 import Login from "../src/Pages/Login";
 
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Home from "./Pages/Home";
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
-        <Footer />
       </BrowserRouter>
     </div>
   );
