@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Navbar = () => {
+  const { user } = useAuthContext();
   const { logout } = useLogout();
   const handelLogout = () => {
     logout();
@@ -15,28 +17,34 @@ const Navbar = () => {
           <Link to={"/"}>Workout Buddy</Link>
         </div>
         <div className="flex space-x-4 items-center">
-          <div>
-            <button
-              className="text-white hover:text-gray-300 bg-red-500 px-4 py-2 rounded   "
-              onClick={handelLogout}
-            >
-              Log out
-            </button>
-          </div>
-          <div className="flex space-x-4">
-            <Link
-              to="/signup"
-              className="text-white hover:text-gray-300 bg-blue-500 px-4 py-2 rounded-lg "
-            >
-              Signup
-            </Link>
-            <Link
-              to="/login"
-              className="text-white hover:text-gray-300 bg-blue-500 px-4 py-2 rounded-lg"
-            >
-              Login
-            </Link>
-          </div>
+          {user && (
+            <div className="flex space-x-4 items-center justify-center ">
+              <div className="text-white">{user && user.email}</div>
+
+              <button
+                className="text-white hover:text-gray-300 bg-red-500 px-4 py-2 rounded   "
+                onClick={handelLogout}
+              >
+                Log out
+              </button>
+            </div>
+          )}
+          {!user && (
+            <div className="flex space-x-4">
+              <Link
+                to="/signup"
+                className="text-white hover:text-gray-300 bg-blue-500 px-4 py-2 rounded-lg "
+              >
+                Signup
+              </Link>
+              <Link
+                to="/login"
+                className="text-white hover:text-gray-300 bg-blue-500 px-4 py-2 rounded-lg"
+              >
+                Login
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>
