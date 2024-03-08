@@ -13,9 +13,9 @@ const Login = () => {
   };
   return (
     <>
-      <div className="bg-cover bg-center bg-fixed">
+      <div className="bg-cover bg-center bg-fixed h-screen bg-[#F7E2DF]">
         <div className="h-screen flex justify-center items-center">
-          <div className="bg-white mx-4 p-8 rounded shadow-md w-full md:w-1/2 lg:w-1/3">
+          <div className="bg-white mx-4 p-8 rounded-xl shadow-lg w-full md:w-1/3 lg:w-1/3">
             <h1 className="text-3xl font-bold mb-8 text-center">Login</h1>
             <form onSubmit={handelLogin}>
               <div className="mb-4">

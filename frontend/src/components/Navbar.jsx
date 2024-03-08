@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
+import logo from "../../public/logo.svg";
 
 const Navbar = () => {
   const { user } = useAuthContext();
@@ -14,7 +15,11 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-white font-bold text-xl">
           {" "}
-          <Link to={"/"}>Workout Buddy</Link>
+          <div>
+            <Link to={"/"}>
+              <img src={logo} alt="logo" className="w-16 h-16" />
+            </Link>
+          </div>
         </div>
         <div className="flex space-x-4 items-center">
           {user && (
@@ -39,7 +44,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/login"
-                className="text-white hover:text-gray-300 bg-blue-500 px-4 py-2 rounded-lg"
+                className="text-white hover:text-gray-300 bg-red-500 px-4 py-2 rounded-lg"
               >
                 Login
               </Link>

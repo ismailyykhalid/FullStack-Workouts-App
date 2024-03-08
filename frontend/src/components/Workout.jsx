@@ -32,22 +32,43 @@ const Workout = ({ workout }) => {
   };
 
   return (
-    <div className="w-1/3 bg-white p-6 rounded-lg shadow-md border ml-6 mb-4 container justify-center">
-      <h1 className="text-xl mb-4 font-bold text-green-500">{workout.title}</h1>
-      <p className="text-gray-600 font-semibold">Reps: {workout.reps}</p>
-      <p className="text-gray-600 font-semibold">Load: {workout.load}</p>
-      <p className="text-gray-600">
-        {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
-      </p>
-      <span>
-        <button
-          onClick={handelDeleteWorkout}
-          className=" mt-5 bg-red-500 text-white rounded-full px-2"
-        >
-          Delete
-        </button>
-      </span>
-    </div>
+    <>
+      <div className="bg-white w-48 h-64 rounded-lg shadow-md border ml-6 mb-4 container justify-center">
+        <div className="flex p-2 gap-1">
+          <div className="">
+            <span
+              onClick={handelDeleteWorkout}
+              className="bg-red-500 center w-3 h-3 rounded-full hover:bg-red-300 hover:cursor-pointer hover:w-4 hover:h-4 flex items-center justify-center mt-[6px] "
+            >
+              <p className=" text-[10px] hover:text-[14px] font-bold text-black ">
+                x
+              </p>
+            </span>
+          </div>
+          <div className="circle">
+            <span className="bg-yellow-500 inline-block center w-3 h-3 rounded-full"></span>
+          </div>
+          <div className="circle">
+            <span className="bg-green-500 box inline-block center w-3 h-3 rounded-full"></span>
+          </div>
+        </div>
+        <div className=" ml-3 mt-5">
+          <h1 className="text-xl mb-4 font-bold text-red-400">
+            Title :{" "}
+            <span className="text-lg text-black font-semibold">
+              {workout.title}{" "}
+            </span>
+          </h1>
+          <p className="text-gray-600 font-semibold">Reps: {workout.reps} 🔁</p>
+          <p className="text-gray-600 font-semibold">Load: {workout.load} 💪</p>
+          <p className="text-gray-600 mt-16">
+            {formatDistanceToNow(new Date(workout.createdAt), {
+              addSuffix: true,
+            })}
+          </p>
+        </div>
+      </div>
+    </>
   );
 };
 

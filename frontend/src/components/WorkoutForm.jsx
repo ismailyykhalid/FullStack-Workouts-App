@@ -45,7 +45,7 @@ const WorkoutForm = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md w-[50%] h-[70%] m-9 border border-black">
+    <div className="p-6 bg-white rounded-lg shadow-xl w-[50%] h-[70%] m-9 ">
       <h1 className="text-2xl font-semibold mb-4">Add New Workout</h1>
       <form onSubmit={handleFormSubmit}>
         <label className="block text-sm font-medium text-gray-600 mb-4">
